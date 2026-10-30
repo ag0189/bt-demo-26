@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build index and zip
+        run: |
+          cd uploads
+          rm -f all-files.zip
+          zip -r /tmp/all-files.zip . -x "index.html"
+          mv /tmp/all-files.zip all-files.zip
+          {
+            echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>bt-demo-26</title></head><body>'
+            echo '<h1>All pages</h1>'
+            echo '<p><a href="all-files.zip" download>Download everything (zip)</a></p>'
+            echo '<ul>'
+            for f in *.html; do
+              [ "$f" = "index.html" ] || [ ! -e "$f" ] || echo "<li><a href=\"$f\">$f</a></li>"
+            done
+            echo '</ul></body></html>'
+          } > index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: uploads
+      - id: deployment
+        uses: actions/deploy-pages@v4
