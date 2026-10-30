@@ -25,18 +25,20 @@ jobs:
             [ -d "$s" ] || continue
             cp -r "$s" "_site/$s"
             cd "_site/$s"
-            rm -f index.html all-files.zip
-            zip -r "/tmp/$s.zip" . -x ".gitkeep" > /dev/null
+            rm -f all-files.zip
+            zip -r "/tmp/$s.zip" . -x ".gitkeep" -x "index.html" > /dev/null
             mv "/tmp/$s.zip" all-files.zip
-            {
-              echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>'"${s^}"'</title></head><body>'
-              echo "<h1>${s^}</h1>"
-              echo '<p><a href="all-files.zip" download>Download everything (zip)</a></p><ul>'
-              for f in *.html; do
-                [ "$f" = "index.html" ] || [ ! -e "$f" ] || echo "<li><a href=\"$f\">$f</a></li>"
-              done
-              echo '</ul></body></html>'
-            } > index.html
+            if [ ! -f index.html ]; then
+              {
+                echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>'"${s^}"'</title></head><body>'
+                echo "<h1>${s^}</h1>"
+                echo '<p><a href="all-files.zip" download>Download everything (zip)</a></p><ul>'
+                for f in *.html; do
+                  [ "$f" = "index.html" ] || [ ! -e "$f" ] || echo "<li><a href=\"$f\">$f</a></li>"
+                done
+                echo '</ul></body></html>'
+              } > index.html
+            fi
             cd ../..
           done
           {
