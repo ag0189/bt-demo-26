@@ -1,0 +1,46 @@
+// Round 4 Part 2 snap-only (10/29/26): use this if the frame reloaded and snap() is gone ("snap is not defined").
+// Each snap() downloads its own file right away (capture-aw-frame-round4-manual-<number>.json), so a reload loses nothing.
+// Chrome may ask once to allow multiple downloads: allow it. Paste again after any reload (the Console flips to "top").
+// Paste into Chrome DevTools Console with the context set to "multi_app--child--iframe (edit)". Changes nothing on the page.
+(() => {
+if (!/workflows\.6sense\.com/.test(location.hostname)) return console.error('Wrong place: set the Console dropdown to multi_app--child--iframe (edit).');
+const A=(u,b)=>{try{return new URL(u,b).href}catch(e){return u}};
+const F=(c,b)=>c.replace(/url\((['"]?)([^'")]+)\1\)/g,(m,q,u)=>u.startsWith('data:')?m:`url("${A(u,b)}")`);
+const P=s=>s.replace(/::?[a-zA-Z-]+(\([^)]*\))?/g,'').trim();
+const K=s=>{s=P(s);if(!s)return true;try{return s.split(',').some(x=>{x=x.trim();return !x||document.querySelector(x)})}catch(e){return true}};
+const X=r=>{const t=r.cssText;if(!/:\s*;/.test(t))return t;let cs=null;
+  if(!r.selectorText.includes('::')){try{const el=document.querySelector(P(r.selectorText).split(',')[0].trim());cs=el&&getComputedStyle(el)}catch(e){}}
+  return t.replace(/([\w-]+):\s*;\s*/g,(m,p)=>{const v=cs&&cs.getPropertyValue(p);return v?p+': '+v+'; ':''})};
+const W=(rs,b)=>{let o='';for(const r of rs){if(r.type===1){if(K(r.selectorText))o+=X(r)+'\n'}else if(r.cssRules){const i=W(r.cssRules,b);if(i)o+=r.cssText.slice(0,r.cssText.indexOf('{'))+'{\n'+i+'}\n'}else o+=r.cssText+'\n'}return F(o,b)};
+const hash = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 ^ s.charCodeAt(i)) >>> 0; return h.toString(36) + '-' + s.length; };
+// numbering keeps going across reloads (kept in this tab only); starts at 1100
+const next = () => { let k = 1100; try { k = +sessionStorage.getItem('awSnapN') || 1100; sessionStorage.setItem('awSnapN', k + 1); } catch (e) { k = 1100 + Math.floor(Date.now() / 1000) % 900; } return k; };
+const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 24) || 'step';
+window.snap = (label = '') => {
+  let css='';const ext=[];
+  for(const s of document.styleSheets){try{css+=W(s.cssRules,s.href||location.href)}catch(e){ext.push(s.href)}}
+  document.querySelectorAll('input,textarea').forEach(i=>i.setAttribute('value',i.value));
+  document.querySelectorAll('input[type=checkbox],input[type=radio]').forEach(i=>i.checked?i.setAttribute('checked',''):i.removeAttribute('checked'));
+  const sc=[];document.querySelectorAll('*').forEach((e,i)=>{if(e.scrollTop>0)sc.push([i,e.scrollTop])});
+  const c=document.documentElement.cloneNode(true);
+  const ta=[...document.querySelectorAll('textarea')];c.querySelectorAll('textarea').forEach((t,i)=>{if(ta[i])t.textContent=ta[i].value});   // typed prompt text, copy only
+  const all=c.querySelectorAll('*');sc.forEach(([i,t])=>all[i]&&all[i].setAttribute('data-scroll',t));
+  c.querySelectorAll('script,noscript,style,link,iframe').forEach(e=>e.remove());
+  c.querySelectorAll('a[href]').forEach(e=>e.removeAttribute('href'));
+  c.querySelectorAll('[src]').forEach(e=>e.setAttribute('src',A(e.getAttribute('src'),location.href)));
+  c.querySelectorAll('[srcset]').forEach(e=>e.removeAttribute('srcset'));
+  c.querySelectorAll('[style]').forEach(e=>e.setAttribute('style',F(e.getAttribute('style'),location.href)));
+  const h=c.querySelector('head');
+  ext.forEach(u=>{const l=document.createElement('link');l.rel='stylesheet';l.href=u;h.appendChild(l)});
+  const key = hash(css);
+  const st=document.createElement('style');st.setAttribute('data-aw-css',key);h.appendChild(st);
+  const k = next(), file = `capture-aw-${k}-r4-manual-${slugify(label)}.html`;
+  const html = '<!doctype html>\n<!-- '+location.pathname+' '+innerWidth+'x'+innerHeight+' -->\n'+c.outerHTML;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ log: [file], skipped: [], css: { [key]: css }, captures: { [file]: html } })], { type: 'application/json' }));
+  a.download = `capture-aw-frame-round4-manual-${k}.json`; document.body.appendChild(a); a.click(); a.remove();
+  console.log('saved', file);
+};
+window.done = () => console.log('Nothing to do: every snap() already downloaded its own file.');
+console.log('%cReady. Type  snap()  at each screen (or snap(\'preview\')). Each one downloads right away. Finish with Cancel, never Save.', 'font-size:14px;color:#00c');
+})();
