@@ -24733,6 +24733,10 @@ addEventListener('keydown', async e => {
   if (e.key === 'Escape') { if (S.menu) return go({ menu: null }); if (S.ovl) return go({ ovl: null }); }
   if (e.shiftKey && e.key.toLowerCase() === 'r') return reset();
   if ((e.key === 'Delete' || e.key === 'Backspace') && S.scr === 'canvas' && S.cv === CANVAS && CV.sel) return removeNode(CV.sel);
+  // Cmd+Z / Cmd+Shift+Z on her finished workflow, as in the product: the same undo and redo as the bottom toolbar (11/2, Andy)
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && S.scr === 'canvas' && !S.k && (S.cv === CANVAS || LIB_CV.has(S.cv))) {
+    e.preventDefault(); return e.shiftKey ? doRedo() : doUndo();
+  }
   if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') CV.sel = null;   // presenter screens are the captures as they were
   // after any clicking, the arrows carry on from the arrow screen closest to the one she is on (11/2, Andy)
   if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && touched) {
