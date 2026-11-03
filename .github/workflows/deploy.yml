@@ -41,6 +41,23 @@ jobs:
             fi
             cd ../..
           done
+          if [ -d _site/demos ]; then
+            (
+              cd _site/demos
+              {
+                printf '['
+                first=1
+                for d in */; do
+                  d="${d%/}"
+                  [ -f "$d/index.html" ] || continue
+                  [ $first -eq 1 ] || printf ','
+                  first=0
+                  printf '"%s"' "$d"
+                done
+                printf ']'
+              } > folders.json
+            )
+          fi
           {
             echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>bt-demo-26</title></head><body><h1>bt-demo-26</h1><ul>'
             echo '<li><a href="workshops/">Product workshops</a></li>'
