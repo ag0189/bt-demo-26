@@ -9990,7 +9990,7 @@ body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden]))
 <span class="pill">Internal demo</span>
 <h1>BDR Agent Demo</h1>
 <p class="sub">Account research and ready-to-send first emails, with RevvyAI</p>
-<ul class="chips"><li>About 5 minutes</li><li>Guided by voice</li><li>Pause and click anywhere</li></ul>
+<ul class="chips"><li>About 5 minutes</li><li>Guided by voice</li><li>Click around while it plays</li></ul>
 <label>Your name (shown as the signed-in rep)<input id="sim-name" autocomplete="off" placeholder="Andy Seidel"></label>
 <div class="row" id="sim-play-row" hidden><button type="button" id="sim-play">&#9654;&nbsp; Play the guided demo</button></div>
 <div class="row"><button type="button" class="ghost" data-start="app">Start in app</button><button type="button" class="ghost" data-start="email">Start in email</button><a class="help" id="sim-help-open" role="button" tabindex="0">About this demo</a></div>
@@ -10003,7 +10003,7 @@ body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden]))
 <div class="play-only" hidden>
 <h3>Guided demo (Play)</h3>
 <ul><li>On the start screen, press <b>Play the guided demo</b>. A recorded voice walks through the story and the screens click themselves. Turn your sound on.</li>
-<li><b>Pause and explore:</b> click anywhere in the demo and the story pauses so you can click around freely. Press the play button to pick the story back up where the voice is.</li>
+<li><b>Click around while it plays:</b> click or scroll anywhere and the voice keeps going. A small <b>Back to the story</b> button appears. Press it and the screens jump to where the voice is. To stop the voice, press the pause button, and press play to carry on.</li>
 <li><b>Skip around:</b> use the chapter buttons on the bar, or drag the bar. Each chapter is marked on it.</li>
 <li><b>Speed:</b> the speed button offers 1x, 1.2x (the default), 1.5x and 2x.</li>
 <li><b>Hide the controls:</b> the dash on the right of the bar tucks them into a small round button at the bottom left. Click that button to bring them back.</li>
@@ -10781,6 +10781,10 @@ css.textContent = `
 #sim-bar .spd button.on{background:rgba(255,255,255,.18)}
 #sim-bar #sbm{font-size:16px;line-height:1;padding:4px 8px;color:#cfd6e2}
 #sim-hint{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:100001;text-align:center;font:12px/1.2 Inter,sans-serif;color:#fff;pointer-events:none;width:max-content;max-width:calc(100vw - 24px)}
+#sim-back{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:100001;display:flex;align-items:center;border:0;border-radius:99px;padding:7px 14px;background:#A7FBF5;color:#000;font:700 12px/1 Inter,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+#sim-back:hover{background:#fff}
+#sim-back.min{left:46px;bottom:90px;transform:none}
+#sim-back[hidden]{display:none}
 #sim-hint[hidden]{display:none}
 #sim-hint span{display:inline-block;background:rgba(16,24,37,.94);padding:5px 12px;border-radius:12px}
 #sim-hint.min{left:52px;bottom:98px;transform:none;text-align:left}
@@ -10876,10 +10880,12 @@ const GLIDE = 800;
 
 function movePoint(ev, el) { return pointOf(el, ev.at ? ev.at[0] : .5, ev.at ? ev.at[1] : .5, ev.off ? ev.off[0] : 0, ev.off ? ev.off[1] : 0); }
 async function runAct(ev, fast) {
+  if (dirty && !fast) return;  // viewer has taken over the screen
   if (ev.needIdle) await until(() => !busy, 6000);
   let el = null;
   if (ev.to) {
     el = await until(ev.to, ev.click ? 4000 : 700);
+    if (dirty && !fast) return;
     if (!el) { if (ev.fallback) await ev.fallback(); else console.warn('play: step target not found at', ev.t); return; }
     if (!fast) { moveCursor(movePoint(ev, el), ev.lead ? 250 : GLIDE); }
   }
@@ -10905,8 +10911,8 @@ function spans(now, g) {
 }
 function loop() {
   const g = gen, now = vt();
-  while (idx < ITEMS.length && ITEMS[idx].time <= now) { const it = ITEMS[idx++]; if (it.kind !== 'span') fire(it, g); }
-  spans(now, g);
+  while (idx < ITEMS.length && ITEMS[idx].time <= now) { const it = ITEMS[idx++]; if (it.kind !== 'span' && !dirty) fire(it, g); }
+  if (!dirty) spans(now, g);
   paint();
 }
 function startTicker() { stopTicker(); timer = setInterval(loop, 50); }
@@ -10946,7 +10952,7 @@ function pause() { playing = false; audio.pause(); stopTicker(); hideCursor(); p
 
 // A real click, key press or scroll by the viewer pauses the story and hands them the demo; Play then picks up where the voice is
 let watched = null;
-function watchEvt(e) { if (!e.isTrusted || !engaged) return; dirty = true; if (playing) pause(); paint(); }
+function watchEvt(e) { if (!e.isTrusted || !engaged) return; dirty = true; hideCursor(); paint(); }  // the voice keeps playing; scripted clicks stand down until the viewer taps Back to the story
 function attachWatch() {
   const d = mailDoc();
   if (d && watched !== d) { watched = d; for (const t of ['pointerdown', 'keydown', 'wheel']) d.addEventListener(t, watchEvt, true); }
@@ -10961,8 +10967,9 @@ bar.innerHTML = '<button id="sbb" title="Previous chapter">&#9664;&#9664;</butto
 document.body.appendChild(bar);
 const hintEl = document.createElement('div'); hintEl.id = 'sim-hint'; hintEl.hidden = true; hintEl.innerHTML = '<span></span>'; document.body.appendChild(hintEl);
 const miniBtn = document.createElement('button'); miniBtn.id = 'sim-pill'; miniBtn.type = 'button'; miniBtn.hidden = true; miniBtn.title = 'Show the play controls'; miniBtn.setAttribute('aria-label', 'Show the play controls'); miniBtn.innerHTML = '<span>&#9654;</span>'; document.body.appendChild(miniBtn);
+const backBtn = document.createElement('button'); backBtn.id = 'sim-back'; backBtn.type = 'button'; backBtn.hidden = true; backBtn.title = 'Put the screens back where the voice is'; backBtn.innerHTML = '&#8617;&nbsp; Back to the story'; document.body.appendChild(backBtn);
 let collapsed = false;
-function applyBar() { bar.hidden = !engaged || collapsed; miniBtn.hidden = !engaged || !collapsed; hintEl.classList.toggle('min', collapsed); }
+function applyBar() { bar.hidden = !engaged || collapsed; miniBtn.hidden = !engaged || !collapsed; hintEl.classList.toggle('min', collapsed); backBtn.classList.toggle('min', collapsed); if (!engaged) backBtn.hidden = true; }
 const $b = s => bar.querySelector(s), rng = $b('input'), pbtn = $b('#sbp'), tm = $b('.tm'), lab = $b('.lab'), hintBox = hintEl;
 const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
 const chapterAt = t => CHAPTERS.reduce((c, ch, i) => t >= ch[1] - .05 ? i : c, 0);
@@ -10990,7 +10997,7 @@ function paint() {
   lab.textContent = CHAPTERS[chapterAt((scrubbing ? +rng.value : t) + TRIM_START)][0];
   pbtn.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;';
   miniBtn.firstChild.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;'; miniBtn.style.setProperty('--p', Math.min(100, t / D * 100).toFixed(1));
-  if (!playing && dirty && !scrubbing) { hintBox.hidden = false; hintBox.firstChild.textContent = 'Paused. Click around freely, then press play to return to the story.'; }
+  backBtn.hidden = !(dirty && !audio.ended);
 }
 audio.addEventListener('loadedmetadata', () => { setRate(rate); addTicks(); paint(); });
 audio.addEventListener('ratechange', () => { if (Math.abs(audio.playbackRate - rate) > .001) setRate(rate); });
@@ -11001,6 +11008,7 @@ rng.addEventListener('input', () => { scrubbing = true; paint(); });
 rng.addEventListener('change', async () => { const t = +rng.value + TRIM_START; scrubbing = false; await seek(t, true); });
 $b('#sbm').addEventListener('click', e => { e.stopPropagation(); spd.hidden = true; collapsed = true; applyBar(); });
 miniBtn.addEventListener('click', () => { collapsed = false; applyBar(); });
+backBtn.addEventListener('click', () => { if (playing) seek(vt(), true); else play(); });
 $b('#sbf').addEventListener('click', () => { const i = chapterAt(vt()); seek(CHAPTERS[Math.min(CHAPTERS.length - 1, i + 1)][1], true); });
 $b('#sbb').addEventListener('click', () => { const t = vt(), i = chapterAt(t); seek(CHAPTERS[t - CHAPTERS[i][1] > 3 ? i : Math.max(0, i - 1)][1], true); });
 bar.addEventListener('pointerdown', e => e.stopPropagation());
