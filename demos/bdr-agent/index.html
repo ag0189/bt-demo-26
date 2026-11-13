@@ -9900,27 +9900,45 @@ body { line-height: 1.5; }
 html,body{margin:0;height:100%;overflow:hidden}
 #sim-stage{position:relative;transform-origin:0 0;overflow:hidden}
 #sim-loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:14px Inter,sans-serif;color:#696F7B;background:#fff;z-index:99999}
-#sim-reset{position:fixed;left:6px;bottom:8px;z-index:99998;font:600 10px/1 Inter,sans-serif;color:#fff;background:rgba(255,255,255,.12);border:0;border-radius:4px;padding:5px 6px;cursor:pointer;opacity:.35}
-#sim-reset:hover{opacity:1}
+#sim-reset,#sim-help-btn{position:fixed;left:6px;z-index:99998;font:600 10px/1 Inter,sans-serif;color:#fff;border:0;border-radius:4px;padding:5px 6px;cursor:pointer}
+#sim-reset{bottom:30px;background:rgba(255,255,255,.12);opacity:.35}
+#sim-help-btn{bottom:56px;background:rgba(255,255,255,.16);opacity:.75}
+#sim-reset:hover,#sim-help-btn:hover{opacity:1}
 #sim-reset.on-light{color:#101825;background:rgba(0,0,0,.06)}
-/* Start screen and email start: plain sim chrome, not 6sense UI (Andy, 10/29) */
-#sim-start{position:fixed;inset:0;z-index:99997;display:flex;align-items:center;justify-content:center;background:#F4F5F7;font:14px/1.4 Inter,sans-serif;color:#101825}
+#sim-reset.on-light + #sim-help-btn{color:#101825;background:rgba(0,0,0,.06)}
+body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden])) #sim-help-btn{display:none}
+/* Start screen: 6sense branded landing (Andy, 11/13). Fonts load from Google Fonts when online and fall back to Arial and Georgia offline. */
+#sim-start{--teal:#009D95;--deep:#006E75;--bright:#A7FBF5;--navy:#004052;--h:"ABC Ginto Normal","Archivo","Tw Cen MT",Arial,sans-serif;--b:"GT Super Text","Newsreader",Georgia,serif;
+  position:fixed;inset:0;z-index:99997;overflow:auto;color:#fff;font:16px/1.5 var(--b);
+  background:radial-gradient(900px 520px at 88% -8%,rgba(167,251,245,.34),transparent 62%),radial-gradient(760px 520px at -8% 108%,rgba(0,64,82,.55),transparent 60%),linear-gradient(135deg,#00A79E 0%,var(--teal) 40%,var(--deep) 100%)}
 #sim-start[hidden]{display:none}
-#sim-start form{width:340px;background:#fff;border:1px solid #DCDFE4;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:12px}
-#sim-start h1{font-size:16px;font-weight:600;margin:0}
-#sim-start label{font-size:12px;color:#696F7B;display:flex;flex-direction:column;gap:6px}
-#sim-start input{font:14px Inter,sans-serif;padding:8px 10px;border:1px solid #C1C5CC;border-radius:4px;color:#101825}
-#sim-start .row{display:flex;gap:8px;margin-top:4px}
-#sim-start button{flex:1;font:600 13px Inter,sans-serif;padding:9px 0;border-radius:4px;border:1px solid #101825;cursor:pointer;background:#fff;color:#101825}
-#sim-start button:hover{background:#101825;color:#fff}
+#sim-start form{box-sizing:border-box;min-height:100%;max-width:920px;margin:0 auto;padding:40px 28px;display:flex;flex-direction:column;justify-content:center}
+#sim-start .brand{font:700 20px var(--h);letter-spacing:.01em}
+#sim-start .pill{align-self:flex-start;background:var(--bright);color:#000;border-radius:99px;font:700 13px var(--h);padding:5px 14px;margin-top:18px}
+#sim-start h1{font:700 52px/1.05 var(--h);margin:18px 0 10px;color:#fff;letter-spacing:-.01em}
+#sim-start .sub{font-size:20px;margin:0 0 22px;max-width:620px}
+#sim-start .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0;list-style:none}
+#sim-start .chips li{font:700 13px var(--h);padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32)}
+#sim-start label{font:700 14px var(--h);display:flex;flex-direction:column;gap:6px;max-width:360px;margin-bottom:18px;color:#fff}
+#sim-start input{font:16px var(--b);padding:10px 14px;border:0;border-radius:8px;color:#101825;background:#fff}
+#sim-start .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+#sim-start .row[hidden]{display:none}
+#sim-start #sim-play-row{margin-bottom:14px}
+#sim-start button,#sim-start a.help{box-sizing:border-box;display:inline-block;font:700 16px var(--h);text-decoration:none;border-radius:99px;padding:12px 26px;background:#fff;color:var(--navy);border:1.5px solid #fff;cursor:pointer}
+#sim-start button:hover{background:var(--bright);border-color:var(--bright);color:#000}
+#sim-start button.ghost,#sim-start a.help{background:transparent;color:#fff}
+#sim-start button.ghost:hover,#sim-start a.help:hover{background:rgba(255,255,255,.15);border-color:#fff;color:#fff}
+#sim-start #sim-play{background:var(--bright)!important;color:#000!important;border-color:var(--bright);font-size:18px;padding:15px 34px;box-shadow:0 8px 26px rgba(0,40,52,.35)}
+#sim-start #sim-play:hover{background:#fff!important;border-color:#fff}
+#sim-start button:focus-visible,#sim-start a.help:focus-visible,#sim-start input:focus-visible{outline:3px solid var(--bright);outline-offset:2px}
+@media (max-width:620px){#sim-start h1{font-size:36px}#sim-start .sub{font-size:17px}}
 #sim-mail{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:99996;background:#fff}
 /* How to use: link on the start screen and its pop-up, same plain sim chrome (Andy, 11/2) */
-#sim-start a.help{align-self:center;font-size:12px;color:#696F7B;text-decoration:underline;cursor:pointer}
-#sim-start a.help:hover{color:#101825}
-#sim-help{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(16,24,37,.45);font:13px/1.5 Inter,sans-serif;color:#101825}
+#sim-help{position:fixed;inset:0;z-index:100003;display:flex;align-items:center;justify-content:center;background:rgba(16,24,37,.45);font:13px/1.5 Inter,sans-serif;color:#101825}
 #sim-help[hidden]{display:none}
 #sim-help .box{position:relative;width:min(680px,calc(100vw - 32px));max-height:calc(100vh - 48px);overflow:auto;background:#fff;border:1px solid #DCDFE4;border-radius:8px;padding:24px 28px}
 #sim-help h2{font-size:16px;font-weight:600;margin:0 0 12px}
+#sim-help [hidden]{display:none}
 #sim-help h3{font-size:13px;font-weight:600;margin:16px 0 4px}
 #sim-help p,#sim-help ul,#sim-help ol{margin:0 0 6px}
 #sim-help ul,#sim-help ol{padding-left:20px}
@@ -9965,24 +9983,38 @@ html,body{margin:0;height:100%;overflow:hidden}
 <body>
 <div id="sim-loading">Loading…</div>
 <div id="sim-stage"></div>
-<button id="sim-reset" title="Reset the demo (Shift+R)">Reset</button>
+<button id="sim-reset" title="Reset the demo (Shift+R)">Reset</button><button id="sim-help-btn" title="About this demo: what it is and how to use it">Guide</button>
 <div id="sim-start" hidden><form onsubmit="return false">
-<h1>BDR Agent demo</h1>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=Newsreader:wght@400&display=swap">
+<div class="brand">6sense</div>
+<span class="pill">Internal demo</span>
+<h1>BDR Agent Demo</h1>
+<p class="sub">Account research and ready-to-send first emails, with RevvyAI</p>
+<ul class="chips"><li>About 5 minutes</li><li>Guided by voice</li><li>Pause and click anywhere</li></ul>
 <label>Your name (shown as the signed-in rep)<input id="sim-name" autocomplete="off" placeholder="Andy Seidel"></label>
-<div class="row"><button type="button" data-start="app">Start in app</button><button type="button" data-start="email">Start in email</button></div>
-<a class="help" id="sim-help-open" role="button" tabindex="0">What is this? / How to use</a>
+<div class="row" id="sim-play-row" hidden><button type="button" id="sim-play">&#9654;&nbsp; Play the guided demo</button></div>
+<div class="row"><button type="button" class="ghost" data-start="app">Start in app</button><button type="button" class="ghost" data-start="email">Start in email</button><a class="help" id="sim-help-open" role="button" tabindex="0">About this demo</a></div>
 </form></div>
 <div id="sim-help" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="sim-help-title">
 <button type="button" class="x" id="sim-help-close" aria-label="Close">×</button>
-<h2 id="sim-help-title">What is this? / How to use</h2>
+<h2 id="sim-help-title">About this demo</h2>
 <p>A clickable copy of BDR Agent in Sales Intelligence, with RevvyAI. No login, no live instance, no credits. Built around one story (Coforge), with four more accounts to explore.</p>
 <p class="key"><b>The one thing to know:</b> this is not the live product. RevvyAI here answers its suggested prompts and the story's planned questions. If you type a question of your own, nothing comes back. That is expected, not a bug.</p>
+<div class="play-only" hidden>
+<h3>Guided demo (Play)</h3>
+<ul><li>On the start screen, press <b>Play the guided demo</b>. A recorded voice walks through the story and the screens click themselves. Turn your sound on.</li>
+<li><b>Pause and explore:</b> click anywhere in the demo and the story pauses so you can click around freely. Press the play button to pick the story back up where the voice is.</li>
+<li><b>Skip around:</b> use the chapter buttons on the bar, or drag the bar. Each chapter is marked on it.</li>
+<li><b>Speed:</b> the speed button offers 1x, 1.2x (the default), 1.5x and 2x.</li>
+<li><b>Hide the controls:</b> the dash on the right of the bar tucks them into a small round button at the bottom left. Click that button to bring them back.</li>
+<li>Opening this guide pauses the story.</li></ul>
+</div>
 <h3>Before you start</h3>
 <ul><li>Laptop or desktop browser, full screen. It scales to fit smaller windows. Not built for phones.</li><li>Works offline once loaded. Nothing you do is saved or sent anywhere, and no emails go out.</li><li>The date is frozen at Wed, Nov 4, 2026.</li><li>Seeing an older version? Hard refresh (Cmd+Shift+R).</li></ul>
 <h3>Getting in</h3>
-<ol><li>Type your name. It shows as the signed-in user, in RevvyAI's greeting and in email sign-offs.</li><li>Pick <b>Start in app</b> (opens the moves queue) or <b>Start in email</b> (opens the 6QA alert email; click <b>Open plays</b>).</li><li><b>Reset</b> (bottom left) or <b>Shift+R</b> brings you back to this screen any time.</li></ol>
+<ol><li>Type your name. It shows as the signed-in user, in RevvyAI's greeting and in email sign-offs.</li><li>Pick <b>Start in app</b> (opens the moves queue) or <b>Start in email</b> (opens the 6QA alert email; click <b>Open plays</b>).</li><li><b>Reset</b> (bottom left) or <b>Shift+R</b> brings you back to the start screen any time. <b>Guide</b> (bottom left) reopens this pop-up.</li></ol>
 <h3>The story path (Coforge)</h3>
-<ol><li>Open Coforge from the queue.</li><li>In RevvyAI, click <b>What changed recently?</b> Then click any of its follow-ups.</li><li>Go to <b>Review recipients</b>. Tick contacts to turn on Export. Every RevvyAI suggested prompt answers.</li><li>Go to <b>Review drafts</b>. The hero contact is <b>Dana Whitfield</b>, Global Marketing Director.</li><li>Ask RevvyAI for a rewrite of Dana's email. Any prompt that mentions Dana, the launch or Momentuum blue works. Click <b>Apply changes</b>.</li><li>Click <b>Choose Delivery Method</b>, then <b>Mark as done</b>. Coforge moves to History.</li></ol>
+<ol><li>Open Coforge from the queue.</li><li>In RevvyAI, click <b>What changed recently?</b> Click any of its follow-ups.</li><li>Go to <b>Review recipients</b>. Tick contacts to turn on Export. Every RevvyAI suggested prompt answers.</li><li>Go to <b>Review drafts</b>. The hero contact is <b>Dana Whitfield</b>, Global Marketing Director.</li><li>Ask RevvyAI for a rewrite of Dana's email. Any prompt that mentions Dana, the launch or Momentuum blue works. Click <b>Apply changes</b>.</li><li>Click <b>Choose Delivery Method</b> and finish with <b>Mark as done</b>. Coforge moves to History.</li></ol>
 <h3>What RevvyAI answers, by account</h3>
 <table><thead><tr><th>Account</th><th>Suggested prompts (click)</th><th>Follow-ups ("What's next?")</th><th>Typed questions</th></tr></thead><tbody>
 <tr><td>Coforge (story)</td><td>All answer, on all three screens</td><td>All answer</td><td>Story prompts only (above)</td></tr>
@@ -9994,6 +10026,9 @@ html,body{margin:0;height:100%;overflow:hidden}
 <h3>Something looks wrong?</h3>
 <p>Note the account, the screen and what you clicked, and send it to Demo Engineering.</p>
 </div></div>
+<script>
+document.getElementById('sim-help-btn').addEventListener('click', function () { document.getElementById('sim-help-open').click(); });
+</script>
 <script>
 // How to use pop-up: opens from the start screen link, closes on X, Escape or a click outside the box
 (function () {
@@ -10021,7 +10056,8 @@ const SN = JSON.parse(document.getElementById('sim-snaps').textContent);
 const IMG = JSON.parse(document.getElementById('sim-images').textContent);
 const DRZ = JSON.parse(document.getElementById('sim-drafts').textContent);
 const CAP_W = 1512, REVVY_W = 402;
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+let FAST = false; // Play mode seeks replay the story instantly (tools/play-mode.js)
+const sleep = ms => FAST ? Promise.resolve() : new Promise(r => setTimeout(r, ms));
 const $ = (s, r = stage) => r.querySelector(s), $$ = (s, r = stage) => [...r.querySelectorAll(s)];
 const leaves = (text, r = stage) => $$('*', r).filter(e => e.childElementCount === 0 && e.textContent.trim() === text);
 
@@ -10659,6 +10695,330 @@ function closeMail() { if (mail) { mail.remove(); mail = null; } resetBtn.classL
 async function reset() { showStart(); }
 resetBtn.addEventListener('click', reset);
 startEl.addEventListener('click', e => { const b = e.target.closest('[data-start]'); if (b) begin(b.dataset.start); });
+
+// ---------- Play mode (11/13): the guided demo plays itself to the recorded voice ----------
+// Spliced into the runtime at /*PLAY_MODE*/ by tools/build-sim.py when PLAY=1, so it shares the runtime's scope
+// (S, begin, stage, mail, overlay, FAST...). It never draws app UI: it drives the real screens with real clicks
+// (a pointer, clicks routed through the same handlers a viewer uses), plus a plain control bar (sim chrome).
+// Times below are seconds in the voice file (bdr-agent-voice.m4a), taken from the 11/13 screen pass and the
+// spoken lines (recording/click-timeline_v1.md). Nothing here changes the story screens.
+(function playMode() {
+const AUDIO_SRC = 'bdr-agent-voice.m4a';
+const TRIM_START = 3.5;  // seconds cut from the start of the voice file (breathing, clicks). Every time below is in ORIGINAL voice-file seconds.
+const RATES = [1, 1.2, 1.5, 2], DEFAULT_RATE = 1.2;  // playback speed menu; 1.2x is the baseline (decided 11/13)
+const PROMPT = 'I want to reference the new product launch in the email to Dana and explain how 6sense can help identify accounts in market for Agentic AI implementation.';
+const CHAPTERS = [['Intro', 0], ['The alert', 66], ['Why act now', 82], ['Evidence', 134], ['RevvyAI', 161], ['Buying team', 183],
+  ['Drafts', 220], ['Delivery', 260], ['Close', 272]];
+var uiReady = false;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function until(fn, ms = 4000) {
+  const t0 = Date.now();
+  for (;;) { let v = null; try { v = fn(); } catch (e) {} if (v) return v; if (Date.now() - t0 > ms) return null; await wait(40); }
+}
+
+// ---------- finders ----------
+const mailDoc = () => mail && mail.contentDocument;
+const mailEl = re => { const d = mailDoc(); return d && [...d.querySelectorAll('*')].filter(e => e.childElementCount <= 4 && re.test(e.textContent))
+  .sort((a, b) => a.textContent.length - b.textContent.length)[0]; };
+const openPlays = () => { const d = mailDoc(); return d && d.querySelector('[data-sim=open-plays]'); };
+const leaf = t => leaves(t)[0];
+const button = re => $$('button').find(b => re.test(btnText(b)));
+const evHead = t => { const l = leaf(t); return l && (l.closest('div[aria-expanded]') || l); };
+const pill = t => { const p = revvyPanel(), el = p && p.querySelector('[title="' + t + '"]'); return el && (el.closest('[role=button]') || el); };
+const row = i => $$('tbody tr.rc-table-row')[i];
+const tick = i => { const r = row(i); return r && (r.querySelector('span[class^=icon]') || r.querySelector('input[type=checkbox]')); };
+const composer = () => { const p = revvyPanel(); return p && p.querySelector('textarea'); };
+const sendBtn = () => { const p = revvyPanel(); return p && p.querySelector('button[type=submit]'); };
+const dialogBtn = () => overlay && overlay.node && [...overlay.node.querySelectorAll('button')].find(b => btnText(b) === 'Mark as done');
+const draftCard = i => { const l = draftList(); return l && l.children[i]; };
+function scrollParent(el) {
+  for (let p = el && el.parentElement; p && p !== stage; p = p.parentElement) {
+    const o = getComputedStyle(p).overflowY;
+    if ((o === 'auto' || o === 'scroll') && p.scrollHeight > p.clientHeight + 4) return p;
+  }
+  return null;
+}
+function scrollTo(sp, top) {
+  if (!sp) return;
+  if (FAST) sp.scrollTop = top; else sp.scrollTo({ top, behavior: 'smooth' });
+}
+
+function scrollHead(label, frac) {  // scroll so the section header sits at frac of the visible height
+  const e = leaf(label), sp = scrollParent(e); if (!e || !sp) return;
+  scrollTo(sp, sp.scrollTop + (e.getBoundingClientRect().top - sp.getBoundingClientRect().top) / scale - sp.clientHeight * frac);
+}
+
+// ---------- pointer ----------
+const cur = document.createElement('div');
+cur.id = 'sim-cursor';
+cur.innerHTML = '<svg width="22" height="26" viewBox="0 0 22 26"><path d="M2 1.5v19l5-4.6 3.4 7.4 3.1-1.4-3.3-7.2H17z" fill="#101825" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg><i></i>';
+document.body.appendChild(cur);
+const css = document.createElement('style');
+css.textContent = `
+#sim-cursor{position:fixed;left:0;top:0;z-index:100002;pointer-events:none;opacity:0;transform:translate(-100px,-100px);
+  transition:transform .8s cubic-bezier(.45,.05,.25,1),opacity .2s;will-change:transform}
+#sim-cursor svg{display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+#sim-cursor i{position:absolute;left:-9px;top:-9px;width:20px;height:20px;border-radius:50%;border:2px solid #1f6feb;opacity:0;transform:scale(.4)}
+#sim-cursor.click i{animation:simRipple .45s ease-out}
+@keyframes simRipple{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.5)}}
+#sim-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:100001;width:min(680px,calc(100vw - 24px));
+  display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:24px;background:rgba(16,24,37,.94);color:#fff;
+  font:12px/1.2 Inter,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.28)}
+#sim-bar[hidden]{display:none}
+#sim-bar button{border:0;background:none;color:#fff;cursor:pointer;font:600 14px/1 Inter,sans-serif;padding:4px 6px;border-radius:6px}
+#sim-bar button:hover{background:rgba(255,255,255,.14)}
+#sim-bar #sbp{width:30px;height:30px;border-radius:50%;background:#fff;color:#101825;font-size:13px;padding:0}
+#sim-bar #sbp:hover{background:#dfe5ee}
+#sim-bar .trk{position:relative;flex:1;height:20px;display:flex;align-items:center}
+#sim-bar input[type=range]{width:100%;margin:0;accent-color:#fff;cursor:pointer}
+#sim-bar .tk{position:absolute;top:1px;width:2px;height:6px;background:rgba(255,255,255,.55);border-radius:1px;pointer-events:none}
+#sim-bar .lab{min-width:112px;text-align:left;color:#cfd6e2;white-space:nowrap}
+#sim-bar .tm{color:#cfd6e2;font-variant-numeric:tabular-nums;white-space:nowrap}
+#sim-bar #sbr{font-size:12px;border:1px solid rgba(255,255,255,.35);padding:4px 8px;min-width:42px}
+#sim-bar .spd{position:absolute;right:8px;bottom:calc(100% + 8px);background:rgba(16,24,37,.96);border-radius:10px;padding:4px;display:flex;flex-direction:column;min-width:84px}
+#sim-bar .spd[hidden]{display:none}
+#sim-bar .spd button{text-align:left;font-size:12px;padding:6px 10px;display:flex;justify-content:space-between;gap:10px}
+#sim-bar .spd button.on{background:rgba(255,255,255,.18)}
+#sim-bar #sbm{font-size:16px;line-height:1;padding:4px 8px;color:#cfd6e2}
+#sim-hint{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:100001;text-align:center;font:12px/1.2 Inter,sans-serif;color:#fff;pointer-events:none;width:max-content;max-width:calc(100vw - 24px)}
+#sim-hint[hidden]{display:none}
+#sim-hint span{display:inline-block;background:rgba(16,24,37,.94);padding:5px 12px;border-radius:12px}
+#sim-hint.min{left:52px;bottom:98px;transform:none;text-align:left}
+#sim-pill{position:fixed;left:3px;bottom:82px;z-index:100001;width:36px;height:36px;border-radius:50%;border:0;padding:0;cursor:pointer;color:#fff;
+  background:conic-gradient(#A7FBF5 calc(var(--p,0) * 1%),rgba(255,255,255,.28) 0);box-shadow:0 2px 10px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font:12px/1 Inter,sans-serif}
+#sim-pill::before{content:"";position:absolute;inset:3px;border-radius:50%;background:rgba(16,24,37,.96)}
+#sim-pill span{position:relative}
+#sim-pill:hover::before{background:#1c2a40}
+#sim-pill[hidden]{display:none}
+`;
+document.head.appendChild(css);
+let curPos = null;
+function pointOf(el, fx = .5, fy = .5, dx = 0, dy = 0) {
+  const r = el.getBoundingClientRect(); let ox = 0, oy = 0;
+  if (el.ownerDocument !== document && mail) { const m = mail.getBoundingClientRect(); ox = m.left; oy = m.top; }
+  return { x: Math.min(innerWidth - 24, Math.max(8, ox + r.left + r.width * fx + dx)), y: Math.min(innerHeight - 70, Math.max(8, oy + r.top + r.height * fy + dy)) };
+}
+function moveCursor(p, ms = 800) {
+  if (!p) return;
+  if (!curPos) { cur.style.transitionDuration = '0s'; cur.style.transform = `translate(${p.x - 60}px,${p.y + 40}px)`; cur.getBoundingClientRect(); }
+  cur.style.transitionDuration = ms + 'ms,200ms'; cur.style.opacity = 1;
+  cur.style.transform = `translate(${p.x}px,${p.y}px)`; curPos = p;
+}
+const hideCursor = () => { cur.style.opacity = 0; };
+function ripple() { cur.classList.remove('click'); void cur.offsetWidth; cur.classList.add('click'); }
+function clickEl(el) {
+  const w = el.ownerDocument.defaultView;
+  el.dispatchEvent(new w.MouseEvent('click', { bubbles: true, cancelable: true, view: w }));
+}
+
+// ---------- the story, in voice-file seconds ----------
+// to: the element (looked up when the step runs); at/off: where on it the pointer rests; click: click it; lead: glide time before;
+// fn: custom step (fast = instant replay); span: runs across [from, to] (typing)
+const EV = [
+  { t: 71.0, lead: 1.4, to: () => mailEl(/Coforge is researching/), at: [.5, .35] },                  // "Each account comes with a plain English reason"
+  { t: 77.6, lead: 1.6, to: openPlays, click: true, fn: async () => {                                  // "One click on Open plays"
+      await until(() => $('div[aria-expanded]') && revvyPanel(), 5000); await wait(150); } },       // wait for the account page to mount
+  { t: 88.0, lead: 1.2, to: () => leaf('Why act now?'), at: [.3, .5], off: [120, 55] },              // "it tells me why to act now"
+  { t: 122.3, lead: 1.2, to: () => leaf('Recommended approach'), at: [.3, .5], off: [100, 40] },     // "Below that, a recommended approach"
+  { t: 137.4, lead: 0, fn: async () => {                                                                // "The evidence is right here"
+      const e = leaf('Evidence'), sp = scrollParent(e); if (!e || !sp) return;
+      scrollTo(sp, sp.scrollTop + (e.getBoundingClientRect().top - sp.getBoundingClientRect().top) / scale - 70); } },
+  { t: 140.0, lead: 1.0, to: () => evHead('Buying stage'), at: [.5, .5], click: true },                // "The buying stage and the top factors"
+  { t: 143.4, lead: 0, fn: async () => scrollHead('Company profile fit', .3) },                       // bring the next section into view first
+  { t: 145.5, lead: 1.0, to: () => evHead('Company profile fit'), at: [.5, .5], click: true },         // "profile fit and why it's strong"
+  { t: 149.2, lead: 0, fn: async () => scrollHead('Top signals', .4) },
+  { t: 151.2, lead: 1.0, to: () => evHead('Top signals'), at: [.5, .5], click: true },                 // "Top signals like a new product launch"
+  { t: 154.4, lead: 0, fn: async () => scrollHead('Top signals', .35) },                               // let the launch signal show
+  { t: 160.5, lead: 0, fn: async () => { const sp = scrollParent(leaf('Evidence')); if (sp) scrollTo(sp, 0); } }, // back up, RevvyAI is alongside
+  { t: 164.3, lead: 1.6, to: () => pill('What changed recently?'), click: true,                         // "I asked what changed recently"
+    fallback: () => ask('What changed recently?') },
+  { t: 205.4, lead: 1.4, to: () => button(/^Review recipients/), click: true },                        // "It recommends the buying team"
+  { t: 210.2, lead: 1.2, to: () => row(0), at: [.3, .5], off: [0, 0] },                                // "Dana Whitfield ... is at the top"
+  { t: 213.4, lead: .7, to: () => tick(0), click: true },                                              // "I can add anyone, remove anyone"
+  { t: 214.1, lead: .5, to: () => tick(2), click: true },
+  { t: 214.8, lead: .5, to: () => tick(4), click: true },
+  { t: 215.5, lead: .5, to: () => tick(5), click: true },
+  { t: 216.6, lead: 1.0, to: () => $('[data-pendo-id=sixqaplay_contacts_export]'), click: true },     // "push this list into my CRM, SEP, a CSV"
+  { t: 219.6, lead: 0, fn: async () => { dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); } }, // close the Export menu
+  { t: 222.6, lead: 1.4, to: () => button(/^Review drafts/), click: true, fn: async () => {            // "every contact gets their own draft"
+      await until(() => S.scr === 'drafts' && S.drafted.coforge && S.drafted.coforge.done.every(Boolean) && draftList(), 9000);
+      await wait(250); } },                                                                          // drafts finish writing, RevvyAI panel settles
+  { t: 229.2, lead: 1.2, to: () => draftCard(1), at: [.5, .5] },                                       // "An executive ... a practitioner"
+  { t: 233.2, lead: 1.0, to: () => draftCard(0), at: [.5, .5] },                                       // "Dana's draft doesn't mention the launch yet"
+  { t: 236.0, lead: 1.2, to: composer, click: true, fn: async (fast, el) => { el && el.focus({ preventScroll: true }); } }, // "so I ask RevvyAI"
+  { span: [237.0, 246.0], fn: p => { const ta = composer(); if (!ta) return;
+      ta.value = PROMPT.slice(0, Math.round(p * PROMPT.length)); ta.dispatchEvent(new Event('input', { bubbles: true })); } },
+  { t: 247.4, lead: .9, to: sendBtn, click: true, needIdle: true },                                    // sends the prompt
+  { t: 262.6, lead: 1.5, to: () => $('.fma-apply'), click: true, needIdle: true },                     // "Nothing changes until I click Apply changes"
+  { t: 264.2, lead: 1.2, to: () => button(/^Choose Delivery Method/), click: true },                   // "I choose how it goes out"
+  { t: 267.0, lead: 0, fn: async () => { dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); } },
+  { t: 268.5, lead: 1.2, to: () => button(/^Mark as done/), click: true },                             // "I mark the play done"
+  { t: 270.2, lead: .9, to: dialogBtn, click: true },                                                  // confirm; Coforge moves to History
+  { t: 273.5, lead: 0, fn: async () => hideCursor() },
+];
+// flatten to timed items
+const ITEMS = [];
+EV.forEach(ev => {
+  if (ev.span) { ITEMS.push({ time: ev.span[0], kind: 'span', ev }); return; }
+  if (ev.to && ev.lead) ITEMS.push({ time: ev.t - ev.lead, kind: 'move', ev });
+  ITEMS.push({ time: ev.t, kind: 'act', ev });
+});
+ITEMS.sort((a, b) => a.time - b.time);
+
+// ---------- engine ----------
+const audio = new Audio(); audio.preload = 'auto'; audio.src = AUDIO_SRC;
+const vt = () => audio.currentTime + TRIM_START;  // position in original voice-file seconds
+let rate = DEFAULT_RATE;
+function setRate(r) { rate = r; audio.defaultPlaybackRate = r; audio.playbackRate = r; audio.preservesPitch = true; audio.webkitPreservesPitch = true; if (uiReady) paintRate(); }
+setRate(DEFAULT_RATE);
+let gen = 0, playing = false, engaged = false, dirty = false, idx = 0, timer = null, chain = Promise.resolve(), spanDone = new Set();
+const GLIDE = 800;
+
+function movePoint(ev, el) { return pointOf(el, ev.at ? ev.at[0] : .5, ev.at ? ev.at[1] : .5, ev.off ? ev.off[0] : 0, ev.off ? ev.off[1] : 0); }
+async function runAct(ev, fast) {
+  if (ev.needIdle) await until(() => !busy, 6000);
+  let el = null;
+  if (ev.to) {
+    el = await until(ev.to, ev.click ? 4000 : 700);
+    if (!el) { if (ev.fallback) await ev.fallback(); else console.warn('play: step target not found at', ev.t); return; }
+    if (!fast) { moveCursor(movePoint(ev, el), ev.lead ? 250 : GLIDE); }
+  }
+  if (!fast && ev.click && el) { ripple(); await wait(120); }
+  if (ev.click && el) clickEl(el);
+  if (ev.fn) await ev.fn(fast, el);
+}
+function fire(item, g) {
+  const ev = item.ev;
+  if (item.kind === 'move') {
+    const el = ev.to && (() => { try { return ev.to(); } catch (e) { return null; } })();
+    if (el) moveCursor(movePoint(ev, el), Math.max(250, (ev.lead || 1) * 900 / rate));
+  } else if (item.kind === 'act') {
+    chain = chain.then(() => g === gen ? runAct(ev, false) : null).catch(e => console.warn('play step failed', e));
+  }
+}
+function spans(now, g) {
+  EV.forEach((ev, i) => {
+    if (!ev.span) return; const [a, b] = ev.span;
+    if (now >= a && now <= b) ev.fn((now - a) / (b - a));
+    else if (now > b && !spanDone.has(i)) { spanDone.add(i); ev.fn(1); }
+  });
+}
+function loop() {
+  const g = gen, now = vt();
+  while (idx < ITEMS.length && ITEMS[idx].time <= now) { const it = ITEMS[idx++]; if (it.kind !== 'span') fire(it, g); }
+  spans(now, g);
+  paint();
+}
+function startTicker() { stopTicker(); timer = setInterval(loop, 50); }
+function stopTicker() { if (timer) clearInterval(timer); timer = null; }
+
+// Replay the story up to time t instantly, so the screen matches the voice at t (used by Play, seek, chapters, resume after exploring)
+async function seek(t, andPlay) {
+  const g = ++gen; stopTicker(); audio.pause(); playing = false; hideCursor(); curPos = null; spanDone.clear(); paint();
+  await chain.catch(() => {}); chain = Promise.resolve();
+  FAST = true;
+  try {
+    closeOverlay();
+    await until(() => !busy, 3000);
+    stage.replaceChildren();  // no stale screen from the last run for a step to find
+    await begin('email'); attachWatch();
+    for (const ev of EV) {
+      if (g !== gen) return;
+      if (ev.span) { if (ev.span[1] <= t) { ev.fn(1); spanDone.add(EV.indexOf(ev)); } else if (ev.span[0] <= t) ev.fn((t - ev.span[0]) / (ev.span[1] - ev.span[0])); continue; }
+      if (ev.t > t) break;
+      await runAct(ev, true);
+    }
+  } finally { FAST = false; }
+  if (g !== gen) return;
+  idx = ITEMS.findIndex(it => it.time > t); if (idx < 0) idx = ITEMS.length;
+  EV.forEach((ev, i) => { if (ev.span && ev.span[1] <= t) spanDone.add(i); });
+  dirty = false; audio.currentTime = Math.max(0, t - TRIM_START); paint();
+  if (andPlay) await play();
+}
+async function play() {
+  if (audio.ended || audio.currentTime >= (audio.duration || 1e9) - .4) return seek(0, true);
+  if (dirty) return seek(vt(), true);
+  hintBox.hidden = true;
+  try { await audio.play(); } catch (e) { hint('Click Play again to start the audio'); return; }
+  playing = true; startTicker(); paint();
+}
+function pause() { playing = false; audio.pause(); stopTicker(); hideCursor(); paint(); }
+
+// A real click, key press or scroll by the viewer pauses the story and hands them the demo; Play then picks up where the voice is
+let watched = null;
+function watchEvt(e) { if (!e.isTrusted || !engaged) return; dirty = true; if (playing) pause(); paint(); }
+function attachWatch() {
+  const d = mailDoc();
+  if (d && watched !== d) { watched = d; for (const t of ['pointerdown', 'keydown', 'wheel']) d.addEventListener(t, watchEvt, true); }
+}
+for (const t of ['pointerdown', 'keydown', 'wheel']) stage.addEventListener(t, watchEvt, true);
+
+// ---------- control bar ----------
+const bar = document.createElement('div'); bar.id = 'sim-bar'; bar.hidden = true;
+bar.innerHTML = '<button id="sbb" title="Previous chapter">&#9664;&#9664;</button><button id="sbp" title="Play / pause">&#9654;</button>' +
+  '<button id="sbf" title="Next chapter">&#9654;&#9654;</button><div class="trk"><input type="range" min="0" max="328.3" step="0.1" value="0" aria-label="Position"></div>' +
+  '<span class="tm">0:00 / 0:00</span><span class="lab"></span><button id="sbr" title="Playback speed">1.2x</button><button id="sbm" title="Hide the controls (a small button stays at the bottom left)" aria-label="Hide the controls">&#8211;</button><div class="spd" hidden></div>';
+document.body.appendChild(bar);
+const hintEl = document.createElement('div'); hintEl.id = 'sim-hint'; hintEl.hidden = true; hintEl.innerHTML = '<span></span>'; document.body.appendChild(hintEl);
+const miniBtn = document.createElement('button'); miniBtn.id = 'sim-pill'; miniBtn.type = 'button'; miniBtn.hidden = true; miniBtn.title = 'Show the play controls'; miniBtn.setAttribute('aria-label', 'Show the play controls'); miniBtn.innerHTML = '<span>&#9654;</span>'; document.body.appendChild(miniBtn);
+let collapsed = false;
+function applyBar() { bar.hidden = !engaged || collapsed; miniBtn.hidden = !engaged || !collapsed; hintEl.classList.toggle('min', collapsed); }
+const $b = s => bar.querySelector(s), rng = $b('input'), pbtn = $b('#sbp'), tm = $b('.tm'), lab = $b('.lab'), hintBox = hintEl;
+const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+const chapterAt = t => CHAPTERS.reduce((c, ch, i) => t >= ch[1] - .05 ? i : c, 0);
+let scrubbing = false, hintTimer = null;
+const rbtn = $b('#sbr'), spd = $b('.spd');
+const rlabel = r => r + 'x';
+function paintRate() {
+  if (!spd) return; rbtn.textContent = rlabel(rate);
+  spd.replaceChildren(...RATES.map(r => { const b = document.createElement('button'); b.type = 'button'; b.className = r === rate ? 'on' : '';
+    b.innerHTML = '<span>' + rlabel(r) + '</span><span>' + (r === rate ? '&#10003;' : (r === DEFAULT_RATE ? 'default' : '')) + '</span>'; b.onclick = e => { e.stopPropagation(); setRate(r); spd.hidden = true; }; return b; }));
+}
+rbtn.addEventListener('click', e => { e.stopPropagation(); spd.hidden = !spd.hidden; });
+document.addEventListener('click', e => { if (!spd.hidden && !spd.contains(e.target)) spd.hidden = true; });
+paintRate(); uiReady = true;
+function hint(t) { hintBox.hidden = false; hintBox.firstChild.textContent = t; clearTimeout(hintTimer); hintTimer = setTimeout(() => hintBox.hidden = true, 3500); }
+function addTicks() {
+  const trk = $b('.trk'), D = audio.duration || 328.3; trk.querySelectorAll('.tk').forEach(e => e.remove());
+  CHAPTERS.slice(1).forEach(([n, t]) => { const k = document.createElement('i'); k.className = 'tk'; const f = Math.max(0, t - TRIM_START) / D; k.style.left = `calc(${f * 100}% + ${(.5 - f) * 16}px)`; k.title = n; trk.appendChild(k); });
+}
+function paint() {
+  if (!engaged) return;
+  const D = audio.duration || 328.3, t = audio.currentTime || 0;
+  rng.max = D; if (!scrubbing) rng.value = t;
+  tm.textContent = fmt(scrubbing ? +rng.value : t) + ' / ' + fmt(D);
+  lab.textContent = CHAPTERS[chapterAt((scrubbing ? +rng.value : t) + TRIM_START)][0];
+  pbtn.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;';
+  miniBtn.firstChild.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;'; miniBtn.style.setProperty('--p', Math.min(100, t / D * 100).toFixed(1));
+  if (!playing && dirty && !scrubbing) { hintBox.hidden = false; hintBox.firstChild.textContent = 'Paused. Click around freely, then press play to return to the story.'; }
+}
+audio.addEventListener('loadedmetadata', () => { setRate(rate); addTicks(); paint(); });
+audio.addEventListener('ratechange', () => { if (Math.abs(audio.playbackRate - rate) > .001) setRate(rate); });
+audio.addEventListener('ended', () => { playing = false; stopTicker(); loop(); hideCursor(); paint(); });
+audio.addEventListener('error', () => hint('The voice file (' + AUDIO_SRC + ') is missing next to this page.'));
+pbtn.addEventListener('click', () => playing ? pause() : play());
+rng.addEventListener('input', () => { scrubbing = true; paint(); });
+rng.addEventListener('change', async () => { const t = +rng.value + TRIM_START; scrubbing = false; await seek(t, true); });
+$b('#sbm').addEventListener('click', e => { e.stopPropagation(); spd.hidden = true; collapsed = true; applyBar(); });
+miniBtn.addEventListener('click', () => { collapsed = false; applyBar(); });
+$b('#sbf').addEventListener('click', () => { const i = chapterAt(vt()); seek(CHAPTERS[Math.min(CHAPTERS.length - 1, i + 1)][1], true); });
+$b('#sbb').addEventListener('click', () => { const t = vt(), i = chapterAt(t); seek(CHAPTERS[t - CHAPTERS[i][1] > 3 ? i : Math.max(0, i - 1)][1], true); });
+bar.addEventListener('pointerdown', e => e.stopPropagation());
+
+// ---------- start screen button; leaving the story (Reset) ends Play mode ----------
+const playRow = document.getElementById('sim-play-row'), playBtn = document.getElementById('sim-play');
+playRow.hidden = false;
+document.querySelectorAll('.play-only').forEach(e => e.hidden = false);
+document.getElementById('sim-help-open').addEventListener('click', () => { if (playing) pause(); });
+playBtn.addEventListener('click', () => {
+  engaged = true; applyBar();
+  audio.muted = true; audio.play().then(() => { audio.pause(); audio.muted = false; audio.currentTime = 0; }).catch(() => { audio.muted = false; });
+  seek(0, true);
+});
+new MutationObserver(() => {
+  if (!startEl.hidden && engaged) { gen++; stopTicker(); audio.pause(); audio.currentTime = 0; playing = false; engaged = false; dirty = false; applyBar(); hintEl.hidden = true; hideCursor(); curPos = null; idx = 0; spanDone.clear(); }
+}).observe(startEl, { attributes: true, attributeFilter: ['hidden'] });
+})();
 
 showStart();
 document.getElementById('sim-loading').remove();
