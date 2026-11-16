@@ -9922,6 +9922,7 @@ body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden]))
 #sim-start label{font:700 14px var(--h);display:flex;flex-direction:column;gap:6px;max-width:360px;margin-bottom:18px;color:#fff}
 #sim-start input{font:16px var(--b);padding:10px 14px;border:0;border-radius:8px;color:#101825;background:#fff}
 #sim-start .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+#sim-start [hidden]{display:none!important}
 #sim-start .row[hidden]{display:none}
 #sim-start #sim-play-row{margin-bottom:14px}
 #sim-start button,#sim-start a.help{box-sizing:border-box;display:inline-block;font:700 16px var(--h);text-decoration:none;border-radius:99px;padding:12px 26px;background:#fff;color:var(--navy);border:1.5px solid #fff;cursor:pointer}
@@ -9930,6 +9931,8 @@ body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden]))
 #sim-start button.ghost:hover,#sim-start a.help:hover{background:rgba(255,255,255,.15);border-color:#fff;color:#fff}
 #sim-start #sim-play{background:var(--bright)!important;color:#000!important;border-color:var(--bright);font-size:18px;padding:15px 34px;box-shadow:0 8px 26px rgba(0,40,52,.35)}
 #sim-start #sim-play:hover{background:#fff!important;border-color:#fff}
+#sim-start button.textlink{background:none;border:0;color:#fff;font:600 15px var(--h);text-decoration:underline;text-underline-offset:3px;padding:6px 4px;border-radius:6px}
+#sim-start button.textlink:hover{background:none;color:var(--bright)}
 #sim-start button:focus-visible,#sim-start a.help:focus-visible,#sim-start input:focus-visible{outline:3px solid var(--bright);outline-offset:2px}
 @media (max-width:620px){#sim-start h1{font-size:36px}#sim-start .sub{font-size:17px}}
 #sim-mail{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:99996;background:#fff}
@@ -9992,8 +9995,8 @@ body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden]))
 <p class="sub">Account research and ready-to-send first emails, with RevvyAI</p>
 <ul class="chips"><li>About 5 minutes</li><li>Guided by voice</li><li>Click around while it plays</li></ul>
 <label>Your name (shown as the signed-in rep)<input id="sim-name" autocomplete="off" placeholder="Andy Seidel"></label>
-<div class="row" id="sim-play-row" hidden><button type="button" id="sim-play">&#9654;&nbsp; Play the guided demo</button></div>
-<div class="row"><button type="button" class="ghost" data-start="app">Start in app</button><button type="button" class="ghost" data-start="email">Start in email</button><a class="help" id="sim-help-open" role="button" tabindex="0">About this demo</a></div>
+<div class="row" id="sim-play-row"><button type="button" id="sim-play" data-start="email">Experience BDR Agent</button><a class="help" id="sim-help-open" role="button" tabindex="0">About this demo</a></div>
+<div class="row"><button type="button" class="textlink play-only" data-start="email" hidden>Explore without audio</button></div>
 </form></div>
 <div id="sim-help" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="sim-help-title">
 <button type="button" class="x" id="sim-help-close" aria-label="Close">×</button>
@@ -10002,7 +10005,8 @@ body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden]))
 <p class="key"><b>The one thing to know:</b> this is not the live product. RevvyAI here answers its suggested prompts and the story's planned questions. If you type a question of your own, nothing comes back. That is expected, not a bug.</p>
 <div class="play-only" hidden>
 <h3>Guided demo (Play)</h3>
-<ul><li>On the start screen, press <b>Play the guided demo</b>. A recorded voice walks through the story and the screens click themselves. Turn your sound on.</li>
+<ul><li>On the start screen, press <b>Experience BDR Agent</b>. A recorded voice walks through the story and the screens click themselves. Turn your sound on.</li>
+<li><b>Skipped the voice?</b> Press <b>Play the guided demo</b> at the bottom left any time. It starts the story from the beginning.</li>
 <li><b>Click around while it plays:</b> click or scroll anywhere and the voice keeps going. A small <b>Back to the story</b> button appears. Press it and the screens jump to where the voice is. To stop the voice, press the pause button, and press play to carry on.</li>
 <li><b>Skip around:</b> use the chapter buttons on the bar, or drag the bar. Each chapter is marked on it.</li>
 <li><b>Speed:</b> the speed button offers 1x, 1.2x (the default), 1.5x and 2x.</li>
@@ -10012,7 +10016,7 @@ body:has(#sim-start:not([hidden])) #sim-reset,body:has(#sim-start:not([hidden]))
 <h3>Before you start</h3>
 <ul><li>Laptop or desktop browser, full screen. It scales to fit smaller windows. Not built for phones.</li><li>Works offline once loaded. Nothing you do is saved or sent anywhere, and no emails go out.</li><li>The date is frozen at Wed, Nov 4, 2026.</li><li>Seeing an older version? Hard refresh (Cmd+Shift+R).</li></ul>
 <h3>Getting in</h3>
-<ol><li>Type your name. It shows as the signed-in user, in RevvyAI's greeting and in email sign-offs.</li><li>Pick <b>Start in app</b> (opens the moves queue) or <b>Start in email</b> (opens the 6QA alert email; click <b>Open plays</b>).</li><li><b>Reset</b> (bottom left) or <b>Shift+R</b> brings you back to the start screen any time. <b>Guide</b> (bottom left) reopens this pop-up.</li></ol>
+<ol><li>Type your name. It shows as the signed-in user, in RevvyAI's greeting and in email sign-offs.</li><li>Press <b>Experience BDR Agent</b>. It opens the 6QA alert email. Click <b>Open plays</b> to go into the app.</li><li><b>Reset</b> (bottom left) or <b>Shift+R</b> brings you back to the start screen any time. <b>Guide</b> (bottom left) reopens this pop-up.</li></ol>
 <h3>The story path (Coforge)</h3>
 <ol><li>Open Coforge from the queue.</li><li>In RevvyAI, click <b>What changed recently?</b> Click any of its follow-ups.</li><li>Go to <b>Review recipients</b>. Tick contacts to turn on Export. Every RevvyAI suggested prompt answers.</li><li>Go to <b>Review drafts</b>. The hero contact is <b>Dana Whitfield</b>, Global Marketing Director.</li><li>Ask RevvyAI for a rewrite of Dana's email. Any prompt that mentions Dana, the launch or Momentuum blue works. Click <b>Apply changes</b>.</li><li>Click <b>Choose Delivery Method</b> and finish with <b>Mark as done</b>. Coforge moves to History.</li></ol>
 <h3>What RevvyAI answers, by account</h3>
@@ -10794,6 +10798,21 @@ css.textContent = `
 #sim-pill span{position:relative}
 #sim-pill:hover::before{background:#1c2a40}
 #sim-pill[hidden]{display:none}
+#sim-listen{position:fixed;left:6px;bottom:82px;z-index:100001;width:26px;height:26px;border:0;border-radius:50%;padding:0 0 0 2px;display:flex;align-items:center;justify-content:center;background:#A7FBF5;color:#000;font:11px/1 Inter,sans-serif;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#sim-listen:hover{background:#fff}
+#sim-listen::after{content:attr(data-tip);position:absolute;left:calc(100% + 10px);top:50%;transform:translate(-4px,-50%);opacity:0;pointer-events:none;white-space:nowrap;padding:7px 12px;border-radius:8px;background:rgba(16,24,37,.96);color:#fff;font:600 12px/1 Inter,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.3);transition:opacity .15s,transform .15s}
+#sim-listen:hover::after,#sim-listen:focus-visible::after{opacity:1;transform:translate(0,-50%)}
+#sim-listen[hidden]{display:none}
+#sim-listen.cue,#sim-back.cue{animation:simPulse 1.2s ease-out 5}
+@keyframes simPulse{0%{box-shadow:0 0 0 0 rgba(0,157,149,.85),0 4px 14px rgba(0,0,0,.3)}100%{box-shadow:0 0 0 16px rgba(0,157,149,0),0 4px 14px rgba(0,0,0,.3)}}
+#sim-ring{position:fixed;z-index:100001;pointer-events:none;border:3px solid #009D95;border-radius:10px;animation:simRing 1.3s ease-out 6}
+#sim-ring[hidden],.sim-tip[hidden]{display:none}
+@keyframes simRing{0%{box-shadow:0 0 0 0 rgba(0,157,149,.55)}100%{box-shadow:0 0 0 18px rgba(0,157,149,0)}}
+.sim-tip{position:fixed;z-index:100001;pointer-events:none;max-width:260px;padding:8px 12px;border-radius:10px;background:rgba(16,24,37,.96);color:#fff;font:12px/1.4 Inter,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.3)}
+.sim-tip::after{content:"";position:absolute;left:var(--ax,20px);width:10px;height:10px;margin-left:-5px;background:rgba(16,24,37,.96);transform:rotate(45deg)}
+.sim-tip.below::after{top:-5px}
+.sim-tip.above::after{bottom:-5px}
+@media (prefers-reduced-motion:reduce){#sim-listen.cue,#sim-back.cue,#sim-ring{animation:none}}
 `;
 document.head.appendChild(css);
 let curPos = null;
@@ -10952,12 +10971,63 @@ function pause() { playing = false; audio.pause(); stopTicker(); hideCursor(); p
 
 // A real click, key press or scroll by the viewer pauses the story and hands them the demo; Play then picks up where the voice is
 let watched = null;
-function watchEvt(e) { if (!e.isTrusted || !engaged) return; dirty = true; hideCursor(); paint(); }  // the voice keeps playing; scripted clicks stand down until the viewer taps Back to the story
+function watchEvt(e) { if (!e.isTrusted || !engaged) return; const first = !dirty; dirty = true; hideCursor(); dismissOpenCue(); paint(); if (first) showBackCue(); }  // the voice keeps playing; scripted clicks stand down until the viewer taps Back to the story
 function attachWatch() {
   const d = mailDoc();
   if (d && watched !== d) { watched = d; for (const t of ['pointerdown', 'keydown', 'wheel']) d.addEventListener(t, watchEvt, true); }
 }
 for (const t of ['pointerdown', 'keydown', 'wheel']) stage.addEventListener(t, watchEvt, true);
+
+
+// ---------- cues: small hints so viewers know they can click around and how to get back ----------
+// Each shows once per start, never blocks a click, fades on its own, and goes away on the viewer's first click, key or scroll.
+const ring = document.createElement('div'); ring.id = 'sim-ring'; ring.hidden = true; document.body.appendChild(ring);
+const tipOpen = document.createElement('div'); tipOpen.className = 'sim-tip'; tipOpen.hidden = true; document.body.appendChild(tipOpen);
+const tipBack = document.createElement('div'); tipBack.className = 'sim-tip'; tipBack.hidden = true; document.body.appendChild(tipBack);
+const listenBtn = document.createElement('button'); listenBtn.id = 'sim-listen'; listenBtn.type = 'button'; listenBtn.hidden = true;
+listenBtn.setAttribute('aria-label', 'Play the guided demo'); listenBtn.dataset.tip = 'Play the guided demo'; listenBtn.innerHTML = '&#9654;'; document.body.appendChild(listenBtn);
+let cueTimer = null, openCueTimer = null, backCueTimer = null, backCueShown = false;
+function placeTip(tip, r, where) {  // r: target rect in window coords; where: 'below' or 'above'
+  tip.classList.toggle('below', where === 'below'); tip.classList.toggle('above', where !== 'below');
+  tip.hidden = false; tip.style.visibility = 'hidden'; tip.style.top = 'auto'; tip.style.bottom = 'auto';
+  const w = tip.offsetWidth, cx = r.left + r.width / 2, left = Math.max(10, Math.min(innerWidth - w - 10, cx - w / 2));
+  tip.style.left = left + 'px'; tip.style.setProperty('--ax', Math.max(16, Math.min(w - 16, cx - left)) + 'px');
+  if (where === 'below') tip.style.top = (r.bottom + 14) + 'px'; else tip.style.bottom = (innerHeight - r.top + 14) + 'px';
+  tip.style.visibility = '';
+}
+let openCueIv = null;
+function dismissOpenCue() {
+  clearTimeout(cueTimer); clearTimeout(openCueTimer); clearInterval(openCueIv); ring.hidden = true; tipOpen.hidden = true;
+}
+function placeOpenCue() {  // follows the button, which can still be settling just after the email loads
+  const el = openPlays(); if (!el || !mail) return false;
+  const d = mail.getBoundingClientRect(), b = el.getBoundingClientRect();
+  if (!b.width) return false;
+  const r = { left: d.left + b.left - 6, top: d.top + b.top - 6, width: b.width + 12, height: b.height + 12 }; r.right = r.left + r.width; r.bottom = r.top + r.height;
+  Object.assign(ring.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' }); ring.hidden = false;
+  placeTip(tipOpen, r, 'below'); return true;
+}
+function showOpenCue(text) {  // ring and note on the Open plays button of the email screen
+  tipOpen.textContent = text; if (!placeOpenCue()) return;
+  clearInterval(openCueIv); openCueIv = setInterval(placeOpenCue, 150);
+  openCueTimer = setTimeout(dismissOpenCue, 10000);
+}
+function armOpenCue(text, ms) {  // after ms with no click, key or scroll
+  dismissOpenCue();
+  cueTimer = setTimeout(() => { if (!dirty) showOpenCue(text); }, ms);
+}
+function hideBackCue() { clearTimeout(backCueTimer); tipBack.hidden = true; backBtn.classList.remove('cue'); }
+function showBackCue() {  // once: the first time the viewer clicks away from the story
+  if (backCueShown) return; backCueShown = true;
+  backBtn.classList.add('cue');
+  tipBack.textContent = 'To return to the story, click here. The voice keeps playing.'; placeTip(tipBack, backBtn.getBoundingClientRect(), 'above');
+  backCueTimer = setTimeout(hideBackCue, 8000);
+}
+function dismissOnTouch(e) { if (e.isTrusted) dismissOpenCue(); }
+for (const t of ['pointerdown', 'keydown', 'wheel']) document.addEventListener(t, dismissOnTouch, true);
+let touchedMail = null;
+function watchMailForCue() { const d = mailDoc(); if (d && touchedMail !== d) { touchedMail = d; for (const t of ['pointerdown', 'keydown', 'wheel']) d.addEventListener(t, dismissOnTouch, true); } }
+function clearCues() { dismissOpenCue(); hideBackCue(); listenBtn.classList.remove('cue'); listenBtn.hidden = true; backCueShown = false; }
 
 // ---------- control bar ----------
 const bar = document.createElement('div'); bar.id = 'sim-bar'; bar.hidden = true;
@@ -11008,23 +11078,32 @@ rng.addEventListener('input', () => { scrubbing = true; paint(); });
 rng.addEventListener('change', async () => { const t = +rng.value + TRIM_START; scrubbing = false; await seek(t, true); });
 $b('#sbm').addEventListener('click', e => { e.stopPropagation(); spd.hidden = true; collapsed = true; applyBar(); });
 miniBtn.addEventListener('click', () => { collapsed = false; applyBar(); });
-backBtn.addEventListener('click', () => { if (playing) seek(vt(), true); else play(); });
+backBtn.addEventListener('click', () => { hideBackCue(); if (playing) seek(vt(), true); else play(); });
 $b('#sbf').addEventListener('click', () => { const i = chapterAt(vt()); seek(CHAPTERS[Math.min(CHAPTERS.length - 1, i + 1)][1], true); });
 $b('#sbb').addEventListener('click', () => { const t = vt(), i = chapterAt(t); seek(CHAPTERS[t - CHAPTERS[i][1] > 3 ? i : Math.max(0, i - 1)][1], true); });
 bar.addEventListener('pointerdown', e => e.stopPropagation());
 
 // ---------- start screen button; leaving the story (Reset) ends Play mode ----------
-const playRow = document.getElementById('sim-play-row'), playBtn = document.getElementById('sim-play');
-playRow.hidden = false;
+const playBtn = document.getElementById('sim-play');
 document.querySelectorAll('.play-only').forEach(e => e.hidden = false);
+playBtn.removeAttribute('data-start');  // in Play mode the main button starts the voice (and the email screen with it)
 document.getElementById('sim-help-open').addEventListener('click', () => { if (playing) pause(); });
-playBtn.addEventListener('click', () => {
-  engaged = true; applyBar();
+function startGuided(e) {
+  const restart = !!(e && e.currentTarget === listenBtn);  // pressed from inside the demo: the story restarts at the email, so say so right away
+  clearCues(); engaged = true; applyBar();
   audio.muted = true; audio.play().then(() => { audio.pause(); audio.muted = false; audio.currentTime = 0; }).catch(() => { audio.muted = false; });
-  seek(0, true);
-});
+  seek(0, true).then(() => { watchMailForCue(); armOpenCue(restart ? 'Starting the story from the beginning. Feel free to click around while it plays. Start with Open plays.' : 'Feel free to click around while it plays. Start with Open plays.', restart ? 800 : 4000); });
+}
+playBtn.addEventListener('click', startGuided);
+listenBtn.addEventListener('click', startGuided);
 new MutationObserver(() => {
+  if (!startEl.hidden) { clearCues(); applyBar(); }
   if (!startEl.hidden && engaged) { gen++; stopTicker(); audio.pause(); audio.currentTime = 0; playing = false; engaged = false; dirty = false; applyBar(); hintEl.hidden = true; hideCursor(); curPos = null; idx = 0; spanDone.clear(); }
+  if (startEl.hidden && !engaged) {  // entered without the voice: offer Play, and point at Open plays if nothing is clicked
+    listenBtn.hidden = false; listenBtn.classList.remove('cue'); void listenBtn.offsetWidth; listenBtn.classList.add('cue');
+    watchMailForCue(); armOpenCue('Click Open plays to start exploring. For the voice walkthrough, press Play at the bottom left.', 4000);
+  }
+  if (startEl.hidden && engaged) listenBtn.hidden = true;
 }).observe(startEl, { attributes: true, attributeFilter: ['hidden'] });
 })();
 
